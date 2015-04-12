@@ -1,0 +1,4 @@
+administer eform types:
+  title: 'Administer EForm types'
+  description: '@todo Description'
+  restrict access: true

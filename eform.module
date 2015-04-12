@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function eform_menu() {
+  $items = array();
+
+  $items['admin/structure/eform-types'] = array(
+    'title' => 'EForm types',
+    'description' => 'Manage eform types, including default status, front page promotion, comment settings, etc.',
+    'route_name' => 'eform.overview_types',
+  );
+  $items['admin/structure/eform-types/list'] = array(
+    'title' => 'List',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+  $items['admin/structure/eform-types/add'] = array(
+    'title' => 'Add eform type',
+    'route_name' => 'eform.type_add',
+    'type' => MENU_LOCAL_ACTION,
+  );
+  $items['admin/structure/eform-types/manage/%eform_type'] = array(
+    'title' => 'Edit eform type',
+    //'title callback' => 'entity_page_label',
+    'title arguments' => array(4),
+    'route_name' => 'eform.type_edit',
+  );
+  $items['admin/structure/eform-types/manage/%eform_type/edit'] = array(
+    'title' => 'Edit',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  return $items;
+}

@@ -1,0 +1,5 @@
+eform.overview_types:
+  title: 'EForm types'
+  parent: system.admin_structure
+  description: 'Manage content types, including default status, front page promotion, comment settings, etc.'
+  route_name: entity.eform_type.collection

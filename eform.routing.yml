@@ -1,0 +1,27 @@
+entity.eform_type.collection:
+  path: '/admin/structure/eform_types'
+  defaults:
+    _entity_list: 'eform_type'
+    _title: 'EForm Types'
+  requirements:
+    _permission: 'administer eform types'
+eform.type_add:
+  path: '/admin/structure/eform_types/add'
+  defaults:
+    _entity_form: 'eform_type.add'
+    _title: 'Add EForm type'
+  requirements:
+    _permission: 'administer eform types'
+entity.eform_type.edit_form:
+  path: '/admin/structure/eform_types/manage/{eform_type}'
+  defaults:
+    _entity_form: 'eform_type.edit'
+  requirements:
+    _permission: 'administer eform types'
+entity.eform_type.delete_form:
+  path: '/admin/structure/types/manage/{eform_type}/delete'
+  defaults:
+    _entity_form: 'eform_type.delete'
+    _title: 'Delete'
+  requirements:
+    _entity_access: 'eform_type.delete'

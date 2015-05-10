@@ -25,3 +25,10 @@ entity.eform_type.delete_form:
     _title: 'Delete'
   requirements:
     _entity_access: 'eform_type.delete'
+eform_submission.submit:
+  path: '/eform/submit/{eform_type}'
+  defaults:
+    _controller: '\Drupal\eform\Controller\EFormSubmissionController::submit'
+    _title: 'Submit Form @todo dynamic title'
+  requirements:
+      _permission: 'administer eform types'

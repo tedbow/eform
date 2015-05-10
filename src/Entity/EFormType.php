@@ -52,6 +52,7 @@ class EFormType extends ConfigEntityBundleBase {
   const RESUBMIT_ACTION_OLD = 'EFORM_RESUBMIT_OLD';
   const RESUBMIT_ACTION_NEW = 'EFORM_RESUBMIT_NEW';
   const RESUBMIT_ACTION_DISALLOW = 'EFORM_RESUBMIT_DISALLOW';
+  // @todo Should action be changed from routing to confirm page to routing to user given url defaulting to confirm page?
   const RESUBMIT_ACTION_CONFIRM = 'EFORM_RESUBMIT_CONFIRM';
   /**
    * The machine name of this eform type.
@@ -86,7 +87,25 @@ class EFormType extends ConfigEntityBundleBase {
    *
    * @var string
    */
-  public $description;
+  protected $description;
+
+  /**
+   * @return boolean
+   */
+  public function isDraftable() {
+    return $this->draftable;
+  }
+
+  /**
+   * @var boolean;
+   */
+  protected $draftable;
+  /**
+   * @return string
+   */
+  public function getDescription() {
+    return $this->description;
+  }
 
   /**
    * Help information shown to the user when creating a EForm of this type.
@@ -109,7 +128,35 @@ class EFormType extends ConfigEntityBundleBase {
   /**
    * @var string;
    */
-  public $resubmit_action;
+  protected $resubmit_action;
+
+  /**
+   * @var array;
+   */
+  protected $disallow_text;
+
+  /**
+   * @return array
+   */
+  public function getDisallowText() {
+    // @todo Should there be a default disallow text?
+    return $this->disallow_text;
+  }
+
+
+  /**
+   * @param string $resubmit_action
+   */
+  public function setResubmitAction($resubmit_action) {
+    $this->resubmit_action = $resubmit_action;
+  }
+
+  /**
+   * @return string
+   */
+  public function getResubmitAction() {
+    return $this->resubmit_action;
+  }
 
   /**
    * Module-specific settings for this eform type, keyed by module name.

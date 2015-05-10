@@ -25,15 +25,18 @@ use Drupal\Core\Entity\ContentEntityInterface;
  *   id = "eform_submission",
  *   label = @Translation("EForm Submission"),
  *   bundle_label = @Translation("EForm type"),
- *   controllers = {
- *     "storage" = "Drupal\Core\Entity\ContentEntityDatabaseStorage",
+ *   handlers = {
+ *     "storage" = "Drupal\Core\Entity\Sql\SqlContentEntityStorage",
+ *     "storage_schema" = "Drupal\Core\Entity\Sql\SqlContentEntityStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
- *     "access" = "Drupal\Core\Entity\EntityAccessController",
+ *     "access" = "Drupal\Core\Entity\EntityAccessControlHandler",
+ *     "views_data" = "Drupal\views\EntityViewsData",
  *     "form" = {
- *       "default" = "Drupal\Core\Entity\ContentEntityForm",
- *       "delete" = "Drupal\Core\Entity\Form\Entity\DeleteForm",
- *       "edit" = "Drupal\Core\Entity\ContentEntityForm"
+ *       "default" = "Drupal\eform\EFormSubmissionForm",
+ *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
+ *       "edit" = "Drupal\eform\EFormSubmissionForm"
  *     },
+ *
  *   },
  *   base_table = "eform_submission",
  *   data_table = "eform_submission_field_data",
@@ -69,6 +72,14 @@ class EFormSubmission extends ContentEntityBase implements ContentEntityInterfac
    */
   public function getType() {
     return $this->bundle();
+  }
+
+  /**
+   * @return \Drupal\eform\Entity\EFormType
+   *  Loaded EFormType
+   */
+  public function getEFormType() {
+    return EFormType::load($this->bundle());
   }
 
 
@@ -179,20 +190,26 @@ class EFormSubmission extends ContentEntityBase implements ContentEntityInterfac
       ->setSetting('target_type', 'eform_type')
       ->setReadOnly(TRUE);
     $fields['uid'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Author'))
-      ->setDescription(t('The user that is the node author.'))
+      ->setLabel(t('Submitter'))
+      ->setDescription(t('The user that who submitted the EForm.'))
       ->setRevisionable(TRUE)
       ->setSetting('target_type', 'user')
       ->setTranslatable(TRUE);
+    $fields['draft'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Draft status'))
+      ->setDescription(t('A boolean indicating whether the EForm Submission is a draft.'))
+      ->setRevisionable(TRUE)
+      ->setTranslatable(TRUE)
+      ->setDefaultValue(FALSE);
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
-      ->setDescription(t('The time that the node was created.'))
+      ->setDescription(t('The time that the EForm was submitted.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE);
 
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
-      ->setDescription(t('The time that the node was last edited.'))
+      ->setDescription(t('The time that the EForm was last edited.'))
       ->setRevisionable(TRUE)
       ->setTranslatable(TRUE);
 
@@ -205,7 +222,7 @@ class EFormSubmission extends ContentEntityBase implements ContentEntityInterfac
 
     $fields['revision_uid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Revision user ID'))
-      ->setDescription(t('The user ID of the author of the current revision.'))
+      ->setDescription(t('The user ID of the submitter of the current revision.'))
       ->setSetting('target_type', 'user')
       ->setQueryable(FALSE)
       ->setRevisionable(TRUE);
@@ -230,6 +247,47 @@ class EFormSubmission extends ContentEntityBase implements ContentEntityInterfac
       ));
     return $fields;
   }
+  /**
+   * {@inheritdoc}
+   */
+  public function preSave(EntityStorageInterface $storage) {
+    parent::preSave($storage);
+
+    // If no owner has been set explicitly, make the current user the owner.
+    if (!$this->getOwner()) {
+      // @todo Copy from Node.php should dependency inject be used to get current user?
+      $this->setOwnerId(\Drupal::currentUser()->id());
+    }
+    // If no revision author has been set explicitly, make the node owner the
+    // revision author.
+    if (!$this->getRevisionAuthor()) {
+      $this->setRevisionAuthorId($this->getOwnerId());
+    }
+  }
+
+  /**
+   * @param $draft
+   *
+   * @return bool
+   */
+  public function isDraft() {
+    return (bool) $this->get('draft')->value;
+  }
+
+  /**
+   * @param $draft
+   *
+   * @return \Drupal\eform\Entity\EFormSubmission
+   *   The called EForm Submission entity.
+   */
+  public function setDraft($draft) {
+    $this->set('draft', $draft ? EFORM_DRAFT : EFORM_NOT_DRAFT);
+    return $this;
+  }
+  public function isSubmitted() {
+    return !$this->isDraft()  && !$this->isNew();
+  }
+
 
 
 }

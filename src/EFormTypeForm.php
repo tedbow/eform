@@ -27,9 +27,10 @@ class EFormTypeForm extends EntityForm {
     // @todo Deal with default value logic and message from D7
     $default_value_message = '';
 
+    /* @var \Drupal\eform\Entity\EFormType $type */
     $type = $this->entity;
     if ($this->operation == 'add') {
-      $form['#title'] = String::checkPlain($this->t('Add eform type'));
+      $form['#title'] = $this->t('Add eform type');
     }
     elseif ($this->operation == 'edit') {
       $form['#title'] = $this->t('Edit %name eform type', array('%name' => $type->label()));
@@ -64,7 +65,7 @@ class EFormTypeForm extends EntityForm {
     $form['description'] = array(
       '#title' => t('Description'),
       '#type' => 'textarea',
-      '#default_value' => $type->description,
+      '#default_value' => $type->getDescription(),
       '#description' => t('Describe this eform type. The text will be displayed on the <em>Add new eform type</em> page.'),
     );
 
@@ -116,6 +117,7 @@ class EFormTypeForm extends EntityForm {
       '#required' => TRUE,
       '#multiple' => TRUE,
     );
+
     $form['access']['resubmit_action'] = array(
       '#type' => 'select',
       '#title' => t('Resubmit action'),
@@ -125,8 +127,23 @@ class EFormTypeForm extends EntityForm {
         EFormType::RESUBMIT_ACTION_DISALLOW => t("Don't allow"),
         EFormType::RESUBMIT_ACTION_CONFIRM => t('Goto Confirm page'),
       ),
-      '#default_value' => empty($type->resubmit_action) ? EFormType::RESUBMIT_ACTION_NEW : $type->resubmit_action,
+      '#default_value' => $type->getResubmitAction() ? $type->getResubmitAction() : EFormType::RESUBMIT_ACTION_NEW,
       '#description' => t('Action to take if logged in user has already submitted form.'),
+    );
+    $disallow_text = $type->getDisallowText();
+    $form['access']['disallow_text'] = array(
+      '#type' => 'text_format',
+      '#title' => $this->t('Disallow Text'),
+      '#default_value' => empty($disallow_text['value']) ? '' : $disallow_text['value'],
+      '#format' => empty($disallow_text['format']) ? NULL : $disallow_text['format'],
+      '#description' => $this->t('This text will be displayed if the user has already submitted the form.') . $default_value_message,
+      '#states' => array(
+        'visible' => array(
+          array(
+            ':input[name="resubmit_action"]' => array('value' => EFormType::RESUBMIT_ACTION_DISALLOW),
+          ),
+        ),
+      ),
     );
     //****************SUBMISSION PAGE FIELDSET SETTINGS *********************//
 
@@ -153,7 +170,7 @@ class EFormTypeForm extends EntityForm {
 
     $form['submission_page']['submission_text'] = array(
       '#type' => 'text_format',
-      '#title' => $labels['submission_text'],
+      '#title' => $this->t('Submission Text'),
       '#default_value' => empty($type->submission_text['value']) ? '' : $type->submission_text['value'],
       '#format' => empty($type->submission_text['format']) ? NULL : $type->submission_text['format'],
       '#description' => t('This text will be displayed to the user when a correct form is submitted.') . $default_value_message,
@@ -164,7 +181,20 @@ class EFormTypeForm extends EntityForm {
       '#default_value' => !empty($type->submission_show_submitted),
       '#description' => t('Show submitted data on submission page?'),
     );
+    //****************DRAFT SETTINGS FIELDSET SETTINGS *********************//
 
+    $form['draft_settings'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Draft settings'),
+      '#group' => 'additional_settings',
+      '#weight' => 40,
+    );
+    $form['draft_settings']['draftable'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Draftable'),
+      '#default_value' => $type->isDraftable(),
+      '#description' => $this->t('Is Draftable?'),
+    );
     return $form;
 
   }
@@ -183,7 +213,7 @@ class EFormTypeForm extends EntityForm {
   /**
    * {@inheritdoc}
    */
-  public function validate(array $form, FormStateInterface $form_state) {
+  public function validate(array &$form, FormStateInterface $form_state) {
     parent::validate($form, $form_state);
 
     $id = trim($form_state->getValue('type'));

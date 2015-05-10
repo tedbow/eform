@@ -24,6 +24,16 @@ eform.type.*:
     resubmit_action:
       type: string
       label: 'Resubmit Action'
+    disallow_text:
+          type: mapping
+          label: 'Disallow Text'
+          mapping:
+            format:
+              type: string
+              label: 'Format'
+            value:
+              type: string
+              label: 'Value'
     roles:
       type: sequence
       sequence:
@@ -45,4 +55,7 @@ eform.type.*:
         value:
           type: string
           label: 'Value'
+    draftable:
+          type: boolean
+          label: 'Draftable'
 

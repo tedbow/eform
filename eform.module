@@ -1,5 +1,13 @@
 <?php
+/**
+ * Denotes that the node is not published.
+ */
+const EFORM_NOT_DRAFT = 0;
 
+/**
+ * Denotes that the node is published.
+ */
+const EFORM_DRAFT = 1;
 /**
  * Implements hook_menu().
  */

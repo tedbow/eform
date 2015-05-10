@@ -77,7 +77,7 @@ class EFormTypeListBuilder extends ConfigEntityListBuilder {
       'class' => array('menu-label'),
     );
     // @todo add getDescription to eform_type
-    $row['description'] = Xss::filterAdmin($entity->getTypedData());
+    $row['description'] = Xss::filterAdmin($entity->getDescription());
     return $row + parent::buildRow($entity);
   }
 

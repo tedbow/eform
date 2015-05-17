@@ -2,3 +2,7 @@ administer eform types:
   title: 'Administer EForm types'
   description: '@todo Description'
   restrict access: true
+administer eform_submissions:
+  title: 'Administer EForm Submissions'
+  description: '@todo Description'
+  restrict access: true

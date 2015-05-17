@@ -10,10 +10,13 @@
 
 namespace Drupal\eform\Controller;
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\eform\Entity\EFormSubmission;
 use Drupal\eform\Entity\EFormType;
 use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
+use Drupal\views\Views;
 
 
 class EFormSubmissionController extends ControllerBase {
@@ -34,7 +37,8 @@ class EFormSubmissionController extends ControllerBase {
    * @return array
    *   A EForm submission form.
    */
-  public function submit(EFormType $eform_type) {
+  public function submit_page(EFormType $eform_type) {
+    /** @var \Drupal\eform\Entity\EFormSubmission $eform_submission */
     $eform_submission = $this->getSubmitEFormSubmission($eform_type);
     $resubmit_action = $eform_type->getResubmitAction();
     if ($eform_submission->isSubmitted()) {
@@ -48,9 +52,16 @@ class EFormSubmissionController extends ControllerBase {
         return $form;
       }
     }
-    $form = $this->entityFormBuilder()->getForm($eform_submission);
+    $form = $this->entityFormBuilder()->getForm($eform_submission, 'submit');
 
     return $form;
+  }
+  public function confirm_page(EFormType $eform_type, EFormSubmission $eform_submission) {
+    // @todo use dependency injection to get entityManager
+    $view_builder = \Drupal::entityManager()->getViewBuilder('eform_submission');
+
+    return $view_builder->view($eform_submission, 'confirm');
+
   }
 
   protected function getSubmitEFormSubmission(EFormType $eform_type) {
@@ -117,6 +128,11 @@ class EFormSubmissionController extends ControllerBase {
     }
     return NULL;
   }
+  public function checkSubmitAccess(EFormType $eform_type) {
+    return AccessResult::allowed();
+  }
+
+
   /**
    * Constructs a NodeController object.
    *

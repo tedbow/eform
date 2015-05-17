@@ -72,8 +72,9 @@ class EFormTypeListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
+    /** @var \Drupal\eform\Entity\EFormType $entity */
     $row['title'] = array(
-      'data' => $this->getLabel($entity),
+      'data' => $entity->getSubmitLink(),
       'class' => array('menu-label'),
     );
     // @todo add getDescription to eform_type

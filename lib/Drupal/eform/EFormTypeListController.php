@@ -20,7 +20,9 @@ class EFormTypeListController extends ConfigEntityListController {
    * Overrides use Drupal\Core\Config\Entity\ConfigEntityListController::buildRow().
    */
   public function   buildRow(EntityInterface $entity) {
+
     $row['form'] = $this->getLabel($entity);
+
     return $row + parent::buildRow($entity);
   }
 

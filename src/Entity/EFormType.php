@@ -9,6 +9,7 @@ namespace Drupal\eform\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 use Drupal\Core\Entity\EntityStorageInterface;
+use Drupal\Core\Url;
 
 /**
  * Defines the EForm type configuration entity.
@@ -32,8 +33,8 @@ use Drupal\Core\Entity\EntityStorageInterface;
  *     "label" = "name",
  *   },
  *   links = {
- *     "delete-form" = "eform.eformtype_delete",
- *     "edit-form" = "eform.eformtype_edit",
+ *     "delete-form" = "/admin/structure/eform_types/manage/{eform_type}/delete",
+ *     "edit-form" = "/admin/structure/eform_types/manage/{eform_type}",
  *     "collection" = "/admin/structure/eform_types",
  *   }
  * )
@@ -190,6 +191,22 @@ class EFormType extends ConfigEntityBundleBase {
   public function isLocked() {
     $locked = \Drupal::state()->get('eform.type.locked');
     return isset($locked[$this->id()]) ? $locked[$this->id()] : FALSE;
+  }
+
+  /**
+   * Get submit link.
+   *
+   * @return \Drupal\Core\GeneratedLink|string
+   */
+  public function getSubmitLink() {
+    $url = Url::fromRoute('entity.eform_submission.submit_page', array('eform_type' => $this->type));
+    // @todo should the submit label be distinct from regular label?
+    return \Drupal::l($this->label(), $url);
+  }
+
+  public function getSubmissionsView($mode = 'admin') {
+    // hardcoded for now
+    return 'eform_submissions';
   }
   /**
    * {@inheritdoc}

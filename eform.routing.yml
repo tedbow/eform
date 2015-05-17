@@ -19,16 +19,51 @@ entity.eform_type.edit_form:
   requirements:
     _permission: 'administer eform types'
 entity.eform_type.delete_form:
-  path: '/admin/structure/types/manage/{eform_type}/delete'
+  path: '/admin/structure/eform_types/manage/{eform_type}/delete'
   defaults:
     _entity_form: 'eform_type.delete'
     _title: 'Delete'
   requirements:
     _entity_access: 'eform_type.delete'
-eform_submission.submit:
+entity.eform_type.submissions:
+  path: '/admin/structure/eform_types/manage/{eform_type}/submissions/{views_display_id}'
+  defaults:
+    _controller: '\Drupal\eform\Controller\EFormTypeController::submissions_page'
+    _title: 'Submissions @todo dynamic title'
+    views_display_id: NULL
+  requirements:
+    _permission: 'administer eform_submissions'
+entity.eform_submission.canonical:
+  path: '/eform/{eform_submission}'
+  defaults:
+    _entity_view: 'eform_submission.full'
+    _title: '@todo title'
+  requirements:
+    _entity_access: 'eform_submission.view'
+entity.eform_submission.submit_page:
   path: '/eform/submit/{eform_type}'
   defaults:
-    _controller: '\Drupal\eform\Controller\EFormSubmissionController::submit'
+    _controller: '\Drupal\eform\Controller\EFormSubmissionController::submit_page'
     _title: 'Submit Form @todo dynamic title'
   requirements:
-      _permission: 'administer eform types'
+      _access: 'TRUE'
+entity.eform_submission.confirm:
+  path: '/eform/confirm/{eform_type}/{eform_submission}'
+  defaults:
+    _controller: '\Drupal\eform\Controller\EFormSubmissionController::confirm_page'
+    _title: 'Confirm page @todo dynamic title'
+  requirements:
+    _access: 'TRUE'
+entity.eform_submission.edit_form:
+  path: '/eform/{eform_submission}/edit'
+  defaults:
+    _entity_form: 'eform_submission.edit'
+  requirements:
+     _entity_access: 'eform_submission.edit'
+entity.eform_submission.delete_form:
+  path: '/eform/{eform_submission}/delete'
+  defaults:
+    _entity_form: 'eform_submission.delete'
+    _title: 'Delete'
+  requirements:
+    _entity_access: 'eform_submission.delete'

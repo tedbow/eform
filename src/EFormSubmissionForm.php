@@ -43,12 +43,23 @@ class EFormSubmissionForm extends ContentEntityForm {
         '#type' => 'submit',
         '#value' => $this->t('Save Draft'),
         '#validate' => array('::validate'),
-        '#submit' => array('::submitForm', '::saveDraft'),
+        '#submit' => array('::submitForm', '::saveDraft', '::eformRedirect'),
         '#weight' => -100,
       );
     }
 
     return $actions;
+  }
+  public function eformRedirect(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\eform\Entity\EFormSubmission $eform_submission */
+    $eform_submission = $this->entity;
+   // $form_state->get
+    $form_state->
+    $redirect_params = [
+      'eform_type' => $eform_submission->getType(),
+      'eform_submission' => $eform_submission->id(),
+    ];
+    $form_state->setRedirect('entity.eform_submission.confirm', $redirect_params);
   }
 
 }

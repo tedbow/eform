@@ -20,8 +20,8 @@ use Drupal\Core\Url;
  *   handlers = {
  *     "access" = "Drupal\Core\Entity\EntityAccessControlHandler",
  *     "form" = {
- *       "add" = "Drupal\eform\EFormTypeForm",
- *       "edit" = "Drupal\eform\EFormTypeForm",
+ *       "add" = "Drupal\eform\Form\EFormTypeForm",
+ *       "edit" = "Drupal\eform\Form\EFormTypeForm",
  *     },
  *     "list_builder" = "Drupal\eform\EFormTypeListBuilder",
  *   },

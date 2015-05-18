@@ -5,13 +5,21 @@
  * Time: 9:34 AM
  */
 
-namespace Drupal\eform;
+namespace Drupal\eform\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
 class EFormSubmissionForm extends ContentEntityForm {
+  /**
+   * The entity being used by this form.
+   *
+   * @var \Drupal\eform\Entity\EFormSubmission
+   */
+  protected $entity;
+
   public function save(array $form, FormStateInterface $form_state) {
     return parent::save($form, $form_state);
   }
@@ -24,6 +32,13 @@ class EFormSubmissionForm extends ContentEntityForm {
   }
 
   public function form(array $form, FormStateInterface $form_state) {
+    /*
+    $route = $this->getRequest()->get('_route');
+
+    if (!$this->entity->isNew() && $this->currentUser()->id() != $this->entity->getAuthor()->id()) {
+      $this->setOperation('submit');
+    }
+    */
     $form = parent::form($form, $form_state);
     if ($this->entity->isNew()) {
       $form['revision_uid'] = array(
@@ -38,6 +53,10 @@ class EFormSubmissionForm extends ContentEntityForm {
     $actions = parent::actions($form, $form_state);
     /** @var \Drupal\eform\entity\EFormsubmission $entity */
     $entity = $this->entity;
+    // Add redirect function callback.
+    if (isset($actions['submit'])) {
+      $actions['submit'][] =  '::eformRedirect';
+    }
     if ($entity->getEFormType()->isDraftable()) {
       $actions['draft'] = array(
         '#type' => 'submit',
@@ -54,12 +73,12 @@ class EFormSubmissionForm extends ContentEntityForm {
     /** @var \Drupal\eform\Entity\EFormSubmission $eform_submission */
     $eform_submission = $this->entity;
    // $form_state->get
-    $form_state->
-    $redirect_params = [
-      'eform_type' => $eform_submission->getType(),
-      'eform_submission' => $eform_submission->id(),
-    ];
-    $form_state->setRedirect('entity.eform_submission.confirm', $redirect_params);
+    if (!$eform_submission->isDraft()) {
+      $redirect_params = [
+        'eform_type' => $eform_submission->getType(),
+        'eform_submission' => $eform_submission->id(),
+      ];
+      $form_state->setRedirect('entity.eform_submission.confirm', $redirect_params);
+    }
   }
-
 }

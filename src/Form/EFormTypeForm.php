@@ -5,7 +5,7 @@
  * Contains \Drupal\eform\EFormTypeFormController.
  */
 
-namespace Drupal\eform;
+namespace Drupal\eform\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\eform\Entity\EFormType;
@@ -24,8 +24,6 @@ class EFormTypeForm extends EntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
-    // @todo Deal with default value logic and message from D7
-    $default_value_message = '';
 
     /* @var \Drupal\eform\Entity\EFormType $type */
     $type = $this->entity;
@@ -69,6 +67,22 @@ class EFormTypeForm extends EntityForm {
       '#description' => t('Describe this eform type. The text will be displayed on the <em>Add new eform type</em> page.'),
     );
 
+    $form = $this->EFormTypeElements($form, $type, $default_dvalue_message);
+    return $form;
+
+  }
+
+  /**
+   * @param array $form
+   * @param $type
+   * @param $default_value_message
+   *
+   * @return array
+   */
+  public function EFormTypeElements(array $form, $type) {
+    // @todo Deal with default value logic and message from D7
+    $default_value_message = '';
+
     $form['additional_settings'] = array(
       '#type' => 'vertical_tabs',
     );
@@ -80,7 +94,7 @@ class EFormTypeForm extends EntityForm {
     );
 
 
-    $form['submission']['help']  = array(
+    $form['submission']['help'] = array(
       '#type' => 'textarea',
       '#title' => $this->t('Explanation or submission guidelines'),
       '#default_value' => $type->help,
@@ -196,7 +210,6 @@ class EFormTypeForm extends EntityForm {
       '#description' => $this->t('Is Draftable?'),
     );
     return $form;
-
   }
 
   /**

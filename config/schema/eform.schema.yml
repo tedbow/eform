@@ -58,4 +58,49 @@ eform.type.*:
     draftable:
           type: boolean
           label: 'Draftable'
-
+# Config object for EForm Type defaults
+# This should follow the same format as eform.type.* but without all settings.
+eform.type_defaults:
+  type: config_object
+  label: 'EForm Type Defaults'
+  mapping:
+      help:
+        type: text
+        label: 'Explanation or submission guidelines'
+      resubmit_action:
+        type: string
+        label: 'Resubmit Action'
+      disallow_text:
+            type: mapping
+            label: 'Disallow Text'
+            mapping:
+              format:
+                type: string
+                label: 'Format'
+              value:
+                type: string
+                label: 'Value'
+      roles:
+        type: sequence
+        sequence:
+          type: string
+          label: 'Roles'
+      preview_page:
+        type: boolean
+        label: 'Preview Page'
+      submission_page_title:
+        type: string
+        label: 'Submission Page Title'
+      submission_text:
+        type: mapping
+        label: 'Submission Text'
+        mapping:
+          format:
+            type: string
+            label: 'Format'
+          value:
+            type: string
+            label: 'Value'
+      draftable:
+            type: boolean
+            label: 'Draftable'

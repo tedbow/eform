@@ -52,9 +52,21 @@ class EFormSubmissionController extends ControllerBase {
         return $form;
       }
     }
-    $form = $this->entityFormBuilder()->getForm($eform_submission, 'submit');
+    $form_mode = $this->getFormMode($eform_submission);
+    $form = $this->entityFormBuilder()->getForm($eform_submission, $form_mode);
 
     return $form;
+  }
+  function getFormMode(EFormSubmission $eform_submission) {
+    if ($eform_submission->isDraft()) {
+      return 'submit_draft';
+    }
+    if ($eform_submission->isNew()) {
+      return 'submit';
+    }
+    else {
+      return 'submit_previous';
+    }
   }
   public function confirm_page(EFormType $eform_type, EFormSubmission $eform_submission) {
     // @todo use dependency injection to get entityManager

@@ -1,3 +1,4 @@
+##### EForm Type Routes #####
 entity.eform_type.collection:
   path: '/admin/structure/eform_types'
   defaults:
@@ -33,6 +34,7 @@ entity.eform_type.submissions:
     views_display_id: NULL
   requirements:
     _permission: 'administer eform_submissions'
+##### EForm Submission Routes #####
 entity.eform_submission.canonical:
   path: '/eform/{eform_submission}'
   defaults:
@@ -54,6 +56,8 @@ entity.eform_submission.confirm:
     _title: 'Confirm page @todo dynamic title'
   requirements:
     _access: 'TRUE'
+# @todo Should the edit route goto a custom function on controller?
+#   This would allow swithcing form module based on who is editing.
 entity.eform_submission.edit_form:
   path: '/eform/{eform_submission}/edit'
   defaults:
@@ -80,4 +84,12 @@ entity.eform_submission.nuke_em:
     _title: 'Nuking'
   requirements:
     _access: 'TRUE'
+##### EForm Settings Routes #####
+eform.eform_type_defaults:
+  path: '/admin/config/content/eform-type-defaults'
+  defaults:
+    _form: 'Drupal\eform\Form\EFormTypeDefaultsForm'
+    _title: 'EForm Type Defaults'
+  requirements:
+    _permission: 'administer eform types'
 

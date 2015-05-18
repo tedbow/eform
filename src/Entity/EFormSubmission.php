@@ -32,10 +32,12 @@ use Drupal\Core\Entity\ContentEntityInterface;
  *     "access" = "Drupal\eform\EFormSubmissionAccessControlHandler",
  *     "views_data" = "Drupal\eform\EFormSubmissionViewsData",
  *     "form" = {
- *       "default" = "Drupal\eform\EFormSubmissionForm",
+ *       "default" = "Drupal\eform\Form\EFormSubmissionForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
- *       "edit" = "Drupal\eform\EFormSubmissionForm",
- *       "submit" = "Drupal\eform\EFormSubmissionForm",
+ *       "edit" = "Drupal\eform\Form\EFormSubmissionForm",
+ *       "submit" = "Drupal\eform\Form\EFormSubmissionForm",
+ *       "submit_draft" = "Drupal\eform\Form\EFormSubmissionForm",
+ *       "submit_previous" = "Drupal\eform\Form\EFormSubmissionForm",
  *     },
  *      "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
  *

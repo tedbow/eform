@@ -10,7 +10,8 @@ eform.type_edit:
 eform_type.submissions:
   route_name: entity.eform_type.submissions
   base_route: entity.eform_type.edit_form
-  title: 'Submission'
+  title: 'Submissions'
+  weight: 1000
 entity.eform_submission.canonical:
   route_name: entity.eform_submission.canonical
   base_route: entity.eform_submission.canonical

@@ -30,11 +30,12 @@ use Drupal\Core\Entity\ContentEntityInterface;
  *     "storage_schema" = "Drupal\Core\Entity\Sql\SqlContentEntityStorageSchema",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "access" = "Drupal\eform\EFormSubmissionAccessControlHandler",
- *     "views_data" = "Drupal\views\EntityViewsData",
+ *     "views_data" = "Drupal\eform\EFormSubmissionViewsData",
  *     "form" = {
  *       "default" = "Drupal\eform\EFormSubmissionForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
- *       "edit" = "Drupal\eform\EFormSubmissionForm"
+ *       "edit" = "Drupal\eform\EFormSubmissionForm",
+ *       "submit" = "Drupal\eform\EFormSubmissionForm",
  *     },
  *      "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
  *

@@ -132,6 +132,22 @@ class EFormSubmissionController extends ControllerBase {
     return AccessResult::allowed();
   }
 
+  /**
+   * Just for development.
+   *
+   * @param $eform_type_str
+   *
+   * @return array
+   */
+  public function nuke_em($eform_type_str) {
+    $query = \Drupal::entityQuery('eform_submission');
+    $eids = $query->execute();
+    entity_delete_multiple('eform_submission', $eids);
+    return [
+      '#type' => 'markup',
+      '#markup' => 'Nuked!'
+    ];
+  }
 
   /**
    * Constructs a NodeController object.

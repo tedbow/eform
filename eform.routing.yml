@@ -67,3 +67,17 @@ entity.eform_submission.delete_form:
     _title: 'Delete'
   requirements:
     _entity_access: 'eform_submission.delete'
+# @todo Remove delevelopment route
+# Just a develop route to delete eform submissions
+# Won't be needed once bulk delete on View is working
+# Just here now all the submission can be deleted and module uninstalled
+# @todo Find out if this module must provide action for crud on entity types or
+#   if it will be in core
+entity.eform_submission.nuke_em:
+  path: '/eform/nuke_em/{eform_type_str}'
+  defaults:
+    _controller: '\Drupal\eform\Controller\EFormSubmissionController::nuke_em'
+    _title: 'Nuking'
+  requirements:
+    _access: 'TRUE'
+

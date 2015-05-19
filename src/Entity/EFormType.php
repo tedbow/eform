@@ -90,6 +90,17 @@ class EFormType extends ConfigEntityBundleBase {
    */
   protected $description;
 
+  public function __construct(array $values, $entity_type) {
+    $config = $this->getConfigManager()->getConfigFactory()->get('eform.type_defaults');
+    $default_values = $config->getRawData();
+    $values += $default_values;
+    parent::__construct($values, $entity_type);
+
+
+
+  }
+
+
   /**
    * @return boolean
    */

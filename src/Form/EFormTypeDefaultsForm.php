@@ -14,6 +14,7 @@ use Drupal\eform\Entity\EFormType;
 use Drupal\eform\Form\EFormTypeForm;
 
 class EFormTypeDefaultsForm extends ConfigFormBase{
+
   /**
    * Returns a unique string identifying the form.
    *
@@ -25,10 +26,13 @@ class EFormTypeDefaultsForm extends ConfigFormBase{
   }
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $values = $form_state->getValues();
-    $u = $form_state->getUserInput();
-    $clean_keys = $form_state->getCleanValueKeys();
-    $config = $this->config('eform.type_defaults');
+    $values = $form_state->cleanValues()->getValues();
+
+    $config = \Drupal::configFactory()->getEditable('eform.type_defaults');
+    $keys = array_keys($config->getRawData());
+    foreach ($keys as $key) {
+      $config->clear($key);
+    }
 
     foreach ($values as $key => $value) {
       $config->set($key, $value);
@@ -51,6 +55,4 @@ class EFormTypeDefaultsForm extends ConfigFormBase{
     $form += $eform_type_form->EFormTypeElements($form, $eform_type);
     return parent::buildForm($form, $form_state);
   }
-
-
 }

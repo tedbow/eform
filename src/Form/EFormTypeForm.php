@@ -17,7 +17,7 @@ use Drupal\Core\Form\FormStateInterface;
  * Form controller for eform type forms.
  */
 class EFormTypeForm extends EntityForm {
-
+  const DEFAULT_PROPERTY_TEXT = 'Leave this field blank to use default setting. Use &lt;none&gt; to show no text';
   /**
    * {@inheritdoc}
    */
@@ -67,7 +67,7 @@ class EFormTypeForm extends EntityForm {
       '#description' => t('Describe this eform type. The text will be displayed on the <em>Add new eform type</em> page.'),
     );
 
-    $form = $this->EFormTypeElements($form, $type, $default_dvalue_message);
+    $form = $this->EFormTypeElements($form, $type, EFormTypeForm::DEFAULT_PROPERTY_TEXT);
     return $form;
 
   }
@@ -79,9 +79,9 @@ class EFormTypeForm extends EntityForm {
    *
    * @return array
    */
-  public function EFormTypeElements(array $form, $type) {
+  public function EFormTypeElements(array $form, EFormType $type, $default_value_message = '') {
     // @todo Deal with default value logic and message from D7
-    $default_value_message = '';
+
 
     $form['additional_settings'] = array(
       '#type' => 'vertical_tabs',

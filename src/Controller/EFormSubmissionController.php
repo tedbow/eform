@@ -68,11 +68,39 @@ class EFormSubmissionController extends ControllerBase {
       return 'submit_previous';
     }
   }
-  public function confirm_page(EFormType $eform_type, EFormSubmission $eform_submission) {
-    // @todo use dependency injection to get entityManager
-    $view_builder = \Drupal::entityManager()->getViewBuilder('eform_submission');
 
-    return $view_builder->view($eform_submission, 'confirm');
+  /**
+   * Return confirm page.
+   *
+   * @todo Should this be called 'submission page' or 'confirm page.
+   *       Decide and make sure UI and code use the same term.
+   * @param \Drupal\eform\Entity\EFormType $eform_type
+   * @param \Drupal\eform\Entity\EFormSubmission $eform_submission
+   *
+   * @return array
+   */
+  public function confirm_page(EFormType $eform_type, EFormSubmission $eform_submission) {
+    // @todo submission page
+    $output = array();
+    // @todo add check if submission should be shown.
+    $submission_text = $eform_type->getSubmissionText();
+    if (!empty($submission_text['value'])) {
+      $output['submission_text'] = array(
+        '#type' => 'processed_text',
+        '#text' => $submission_text['value'],
+        '#format' => $submission_text['format'],
+      );
+    }
+    if ($eform_type->isSubmissionShowSubmitted()) {
+      // @todo use dependency injection to get entityManager
+      $view_builder = \Drupal::entityManager()->getViewBuilder('eform_submission');
+
+      $output['submission'] = $view_builder->view($eform_submission, 'confirm');
+      if (!isset($output['submission']['#title'])) {
+        $output['submission']['#title'] = $this->t('Submission');
+      }
+    }
+    return $output;
 
   }
 
@@ -130,6 +158,7 @@ class EFormSubmissionController extends ControllerBase {
       $query = $this->entityStorage()->getQuery();
       $query->condition('uid', $this->currentUser()->id());
       $query->condition('draft', EFORM_DRAFT);
+      $query->condition('type', $eform_type->id());
       // Should not be more than 1 draft.
       $query->sort('created', 'DESC');
       $ids = $query->execute();

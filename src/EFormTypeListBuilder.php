@@ -112,7 +112,7 @@ class EFormTypeListBuilder extends ConfigEntityListBuilder {
   public function render() {
     $build = parent::render();
     $build['#empty'] = t('No eform types available. <a href="@link">Add EForm type</a>.', array(
-      '@link' => $this->urlGenerator->generateFromPath('admin/structure/eform_types/add'),
+      '@link' => $this->urlGenerator->generateFromRoute('eform.type_add'),
     ));
     return $build;
   }

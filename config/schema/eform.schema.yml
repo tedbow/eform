@@ -55,6 +55,19 @@ eform.type.*:
         value:
           type: string
           label: 'Value'
+    submission_text:
+      type: mapping
+      label: 'Submission Text'
+      mapping:
+        format:
+          type: string
+          label: 'Format'
+        value:
+          type: string
+          label: 'Value'
+    submission_show_submitted:
+      type: boolean
+      label: 'Show submission information'
     draftable:
           type: boolean
           label: 'Draftable'
@@ -71,15 +84,15 @@ eform.type_defaults:
         type: string
         label: 'Resubmit Action'
       disallow_text:
-            type: mapping
-            label: 'Disallow Text'
-            mapping:
-              format:
-                type: string
-                label: 'Format'
-              value:
-                type: string
-                label: 'Value'
+        type: mapping
+        label: 'Disallow Text'
+        mapping:
+          format:
+            type: string
+            label: 'Format'
+          value:
+            type: string
+            label: 'Value'
       roles:
         type: sequence
         sequence:
@@ -101,6 +114,9 @@ eform.type_defaults:
           value:
             type: string
             label: 'Value'
+      submission_show_submitted:
+        type: boolean
+        label: 'Show submission information'
       draftable:
-            type: boolean
-            label: 'Draftable'
+        type: boolean
+        label: 'Draftable'

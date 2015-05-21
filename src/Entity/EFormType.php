@@ -89,6 +89,29 @@ class EFormType extends ConfigEntityBundleBase {
    * @var string
    */
   protected $description;
+  /**
+   * @var boolean
+   */
+  protected $submission_show_submitted = FALSE;
+
+  /**
+   * @var array
+   */
+  protected $submission_text;
+
+  /**
+   * @return array
+   */
+  public function getSubmissionText() {
+    return $this->submission_text;
+  }
+
+  /**
+   * @return boolean
+   */
+  public function isSubmissionShowSubmitted() {
+    return $this->submission_show_submitted;
+  }
 
   public function __construct(array $values, $entity_type) {
     $config = $this->getConfigManager()->getConfigFactory()->get('eform.type_defaults');

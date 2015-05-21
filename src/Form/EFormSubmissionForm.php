@@ -55,7 +55,7 @@ class EFormSubmissionForm extends ContentEntityForm {
     $entity = $this->entity;
     // Add redirect function callback.
     if (isset($actions['submit'])) {
-      $actions['submit'][] =  '::eformRedirect';
+      $actions['submit']['#submit'][] =  '::eformRedirect';
     }
     if ($entity->getEFormType()->isDraftable()) {
       $actions['draft'] = array(

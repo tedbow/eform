@@ -181,18 +181,19 @@ class EFormTypeForm extends EntityForm {
       '#default_value' => empty($type->submission_page_title) ? '' : $type->submission_page_title,
       '#description' => t('Page title for correct submission.') . $default_value_message,
     );
-
+    $submission_text = $type->getSubmissionText();
     $form['submission_page']['submission_text'] = array(
       '#type' => 'text_format',
       '#title' => $this->t('Submission Text'),
-      '#default_value' => empty($type->submission_text['value']) ? '' : $type->submission_text['value'],
-      '#format' => empty($type->submission_text['format']) ? NULL : $type->submission_text['format'],
+      '#default_value' => empty($submission_text['value']) ? '' : $submission_text['value'],
+      '#format' => empty($submission_text['format']) ? NULL : $submission_text['format'],
       '#description' => t('This text will be displayed to the user when a correct form is submitted.') . $default_value_message,
     );
+    $show_submitted = $type->isSubmissionShowSubmitted();
     $form['submission_page']['submission_show_submitted'] = array(
       '#type' => 'checkbox',
       '#title' => t('Show submission information'),
-      '#default_value' => !empty($type->submission_show_submitted),
+      '#default_value' => !empty($show_submitted),
       '#description' => t('Show submitted data on submission page?'),
     );
     //****************DRAFT SETTINGS FIELDSET SETTINGS *********************//

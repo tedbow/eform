@@ -80,9 +80,7 @@ class EFormSubmissionController extends ControllerBase {
    * @return array
    */
   public function confirm_page(EFormType $eform_type, EFormSubmission $eform_submission) {
-    // @todo submission page
     $output = array();
-    // @todo add check if submission should be shown.
     $submission_text = $eform_type->getSubmissionText();
     if (!empty($submission_text['value'])) {
       $output['submission_text'] = array(

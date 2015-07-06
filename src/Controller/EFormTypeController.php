@@ -72,7 +72,7 @@ class EFormTypeController extends ControllerBase{
   protected function getViewDisplays($view_name) {
     $view = Views::getView($view_name);
     $view->initDisplay();
-    //@todo make a list of links of views displays that are "embed"
+    //@ todo make a list of links of views displays that are "embed"
     $displays = $view->displayHandlers;
     $useable_displays = [];
     /* @var DisplayPluginBase $display */

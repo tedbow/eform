@@ -185,7 +185,7 @@ class EFormTypeForm extends EntityForm {
       '#type' => 'text_format',
       '#title' => $this->t('Submission Text'),
       '#default_value' => empty($submission_text['value']) ? '' : $submission_text['value'],
-      '#format' => empty($submission_text['format']) ? NULL : ['format'],
+      '#format' => empty($submission_text['format']) ? NULL : $submission_text['format'],
       '#description' => t('This text will be displayed to the user when a correct form is submitted.') . $default_value_message,
     );
     $show_submitted = $type->isSubmissionShowSubmitted();

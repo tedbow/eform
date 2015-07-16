@@ -117,6 +117,7 @@ class EFormSubmissionController extends ControllerBase {
       else {
         $query = $this->entityStorage()->getQuery();
         $query->condition('uid', $this->currentUser()->id());
+        $query->condition('type', $eform_type->type);
         if ($eform_type->isDraftable()) {
           $query->sort('draft', 'DESC');
         }

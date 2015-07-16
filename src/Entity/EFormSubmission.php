@@ -14,7 +14,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\user\UserInterface;
-use Drupal\eform\EFormTypeForm;
 use Drupal\Core\Entity\ContentEntityInterface;
 
 /**

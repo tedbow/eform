@@ -9,7 +9,6 @@ namespace Drupal\eform\Form;
 
 use Drupal\Core\Entity\EntityForm;
 use Drupal\eform\Entity\EFormType;
-use Drupal\Component\Utility\String;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
 

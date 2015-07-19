@@ -60,10 +60,10 @@ use Drupal\Core\Entity\ContentEntityInterface;
  *   field_ui_base_route = "entity.eform_type.edit_form",
  *   permission_granularity = "bundle",
  *   links = {
- *     "canonical" = "eform_submission.view",
- *     "edit-form" = "eform_submission.page_edit",
+ *     "canonical" = "/eform/{eform_submission}",
+ *     "edit-form" = "/eform/{eform_submission}/edit",
  *     "delete-form" = "/eform/{eform_submission}/delete",
- *     "version-history" = "eform_submission.revision_overview"
+ *     "version-history" = "/eform/{eform_submission}/revisions"
  *   }
  * )
  */

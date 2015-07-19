@@ -22,6 +22,7 @@ use Drupal\Core\Url;
  *     "form" = {
  *       "add" = "Drupal\eform\Form\EFormTypeForm",
  *       "edit" = "Drupal\eform\Form\EFormTypeForm",
+ *       "delete" = "Drupal\Core\Entity\EntityDeleteForm",
  *     },
  *     "list_builder" = "Drupal\eform\EFormTypeListBuilder",
  *   },

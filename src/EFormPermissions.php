@@ -62,21 +62,7 @@ class EFormPermissions {
       "delete own $type_id submissions" => array(
         'title' => $this->t('%type_name: Delete own submissions', $type_params),
       ),
-      // Which other permissions should be supported?
-      /*"delete any $type_id submissions" => array(
-        'title' => $this->t('%type_name: Delete any submissions', $type_params),
-      ),
-      "view $type_id revisions" => array(
-        'title' => $this->t('%type_name: View revisions', $type_params),
-      ),
-      "revert $type_id revisions" => array(
-        'title' => $this->t('%type_name: Revert revisions', $type_params),
-        'description' => t('Role requires permission <em>view revisions</em> and <em>edit rights</em> for eforms in question, or <em>administer eforms</em>.'),
-      ),
-      "delete $type_id revisions" => array(
-        'title' => $this->t('%type_name: Delete revisions', $type_params),
-        'description' => $this->t('Role requires permission to <em>view revisions</em> and <em>delete rights</em> for eforms in question, or <em>administer eforms</em>.'),
-      ),*/
+      // @todo Which other permissions should be supported?
     );
   }
 

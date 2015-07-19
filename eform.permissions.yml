@@ -6,3 +6,6 @@ administer eform_submissions:
   title: 'Administer EForm Submissions'
   description: '@todo Description'
   restrict access: true
+
+permission_callbacks:
+  - \Drupal\eform\EFormPermissions::eformTypePermissions

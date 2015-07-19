@@ -64,7 +64,7 @@ entity.eform_submission.edit_form:
   defaults:
     _entity_form: 'eform_submission.edit'
   requirements:
-     _entity_access: 'eform_submission.edit'
+    _entity_access: 'eform_submission.edit'
 entity.eform_submission.delete_form:
   path: '/eform/{eform_submission}/delete'
   defaults:

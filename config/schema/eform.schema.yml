@@ -1,6 +1,6 @@
 # Schema for the configuration files of the node module.
 
-# todo add setttings
+# @todo Review Entityform D7 settings to make sure all were duplicated.
 
 eform.type.*:
   type: config_entity

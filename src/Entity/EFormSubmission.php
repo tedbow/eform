@@ -297,6 +297,4 @@ class EFormSubmission extends ContentEntityBase implements ContentEntityInterfac
     return !$this->isDraft()  && !$this->isNew();
   }
 
-
-
 }

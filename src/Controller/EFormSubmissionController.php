@@ -57,6 +57,15 @@ class EFormSubmissionController extends ControllerBase {
 
     return $form;
   }
+
+  /**
+   * Determine Form Display for that should be used for a submission
+   *
+   * @param \Drupal\eform\Entity\EFormSubmission $eform_submission
+   *
+   * @return string
+   *  Id for Form Display Mode
+   */
   function getFormMode(EFormSubmission $eform_submission) {
     if ($eform_submission->isDraft()) {
       return 'submit_draft';
@@ -72,7 +81,7 @@ class EFormSubmissionController extends ControllerBase {
   /**
    * Return confirm page.
    *
-   * @todo Should this be called 'submission page' or 'confirm page.
+   * @todo Should this be called 'submission page' or 'confirm page'.
    *       Decide and make sure UI and code use the same term.
    * @param \Drupal\eform\Entity\EFormType $eform_type
    * @param \Drupal\eform\Entity\EFormSubmission $eform_submission
@@ -102,6 +111,13 @@ class EFormSubmissionController extends ControllerBase {
 
   }
 
+  /**
+   * Get the submission that should be used for the current user on the submission form.
+   *
+   * @param \Drupal\eform\Entity\EFormType $eform_type
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   */
   protected function getSubmitEFormSubmission(EFormType $eform_type) {
 
     if ($eform_type->isDraftable()) {
@@ -115,16 +131,7 @@ class EFormSubmissionController extends ControllerBase {
         $eform_submission = $this->getNewSubmission($eform_type);
       }
       else {
-        $query = $this->entityStorage()->getQuery();
-        $query->condition('uid', $this->currentUser()->id());
-        $query->condition('type', $eform_type->type);
-        if ($eform_type->isDraftable()) {
-          $query->sort('draft', 'DESC');
-        }
-        $query->sort('created', 'DESC');
-        $ids = $query->execute();
-        $id = array_shift($ids);
-        $eform_submission = $this->entityStorage()->load($id);
+        $eform_submission = $this->getPreviousEFormSubmission($eform_type);
         if (empty($eform_submission)) {
           $eform_submission = $this->getNewSubmission($eform_type);
         }
@@ -134,6 +141,7 @@ class EFormSubmissionController extends ControllerBase {
   }
 
   /**
+   * @todo Replace this function with dependency injection.
    * @return \Drupal\Core\Entity\EntityStorageInterface
    */
   protected function entityStorage() {
@@ -141,6 +149,8 @@ class EFormSubmissionController extends ControllerBase {
   }
 
   /**
+   * Get new Entityform Submission.
+   *
    * @param \Drupal\eform\Entity\EFormType $eform_type
    *
    * @return \Drupal\Core\Entity\EntityInterface
@@ -152,6 +162,14 @@ class EFormSubmissionController extends ControllerBase {
       ));
     return $eform_submission;
   }
+
+  /**
+   * Determine what submission should be used as the draft submission.
+   *
+   * @param \Drupal\eform\Entity\EFormType $eform_type
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   */
   protected function getDraftSubmission(EFormType $eform_type) {
     if ($eform_type->isDraftable()) {
       $query = $this->entityStorage()->getQuery();
@@ -163,17 +181,28 @@ class EFormSubmissionController extends ControllerBase {
       $ids = $query->execute();
       if ($ids) {
         $id = array_shift($ids);
+        // @todo Add alter hook here to allow other modules to change.
+        //   see Entityform Anonymous sub-module in Drupal 7.
         return $this->entityStorage()->load($id);
       }
     }
     return NULL;
   }
+
+  /**
+   * @todo Abandoned?
+   * @param \Drupal\eform\Entity\EFormType $eform_type
+   *
+   * @return \Drupal\Core\Access\AccessResult
+   */
   public function checkSubmitAccess(EFormType $eform_type) {
     return AccessResult::allowed();
   }
 
   /**
    * Just for development.
+   *
+   * @todo Remove when bulk operations are added to EForm Views
    *
    * @param $eform_type_str
    *
@@ -187,6 +216,27 @@ class EFormSubmissionController extends ControllerBase {
       '#type' => 'markup',
       '#markup' => 'Nuked!'
     ];
+  }
+
+  /**
+   * Get the previous submission for the current user.
+   *
+   * @param \Drupal\eform\Entity\EFormType $eform_type
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|null
+   */
+  protected function getPreviousEFormSubmission(EFormType $eform_type) {
+    $query = $this->entityStorage()->getQuery();
+    $query->condition('uid', $this->currentUser()->id());
+    $query->condition('type', $eform_type->type);
+    if ($eform_type->isDraftable()) {
+      $query->sort('draft', 'DESC');
+    }
+    $query->sort('created', 'DESC');
+    $ids = $query->execute();
+    $id = array_shift($ids);
+    $eform_submission = $this->entityStorage()->load($id);
+    return $eform_submission;
   }
 
   /**

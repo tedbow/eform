@@ -40,6 +40,14 @@ class EFormTypeController extends ControllerBase{
     return $output;
   }
 
+  /**
+   * Get render links to Submission Pages for each display.
+   *
+   * @param \Drupal\eform\Entity\EFormType $eform_type
+   * @param array $displays
+   *
+   * @return array
+   */
   protected function submissions_links(EFormType $eform_type, array $displays) {
     $links_output = array(
       '#theme' => 'links',
@@ -65,6 +73,8 @@ class EFormTypeController extends ControllerBase{
     return $links_output;
   }
   /**
+   * Get View Displays that are usable for EForm Submission lists.
+   *
    * @param $view
    *
    * @return array;
@@ -98,6 +108,6 @@ class EFormTypeController extends ControllerBase{
       return TRUE;
     }
     return FALSE;
-}
+  }
 
 }

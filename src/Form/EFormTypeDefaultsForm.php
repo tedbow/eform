@@ -13,18 +13,21 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\eform\Entity\EFormType;
 use Drupal\eform\Form\EFormTypeForm;
 
+/**
+ * Form class to build EForm Type Defaults form.
+ */
 class EFormTypeDefaultsForm extends ConfigFormBase{
 
   /**
-   * Returns a unique string identifying the form.
-   *
-   * @return string
-   *   The unique string identifying the form.
+   * {@inheritdoc}
    */
   public function getFormId() {
     return 'eform_type_defaults';
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->cleanValues()->getValues();
 
@@ -49,6 +52,9 @@ class EFormTypeDefaultsForm extends ConfigFormBase{
     return ['eform.type_defaults'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $eform_type_form = new EFormTypeForm();
     $eform_type = new EFormType([], 'eform_type');

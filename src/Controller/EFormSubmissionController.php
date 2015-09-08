@@ -13,19 +13,36 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\eform\Entity\EFormSubmission;
 use Drupal\eform\Entity\EFormType;
-use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Entity\Sql\SqlContentEntityStorage;
-use Drupal\views\Views;
 
 
 class EFormSubmissionController extends ControllerBase {
 
   /**
-   * @var SqlContentEntityStorage $entity_storage
+   * @var SqlContentEntityStorage $entityStorage
    */
-  protected $entity_storage;
+  protected $entityStorage;
 
+  /**
+   * Return title for submit page.
+   *
+   * @param \Drupal\eform\Entity\EFormType $eform_type
+   *
+   * @return string
+   */
+  public function submitTitle(EFormType $eform_type){
+    return $eform_type->getFormTitle();
+  }
 
+  /**
+   * Get the Confirmation Page title
+   * @param \Drupal\eform\Entity\EFormType $eform_type
+   *
+   * @return string
+   */
+  public function confirmationTitle(EFormType $eform_type){
+    return $eform_type->getSubmissionPageTitle();
+  }
 
   /**
    * Provides the EForm submission form.
@@ -36,7 +53,7 @@ class EFormSubmissionController extends ControllerBase {
    * @return array
    *   A EForm submission form.
    */
-  public function submit_page(EFormType $eform_type) {
+  public function submitPage(EFormType $eform_type) {
     /** @var \Drupal\eform\Entity\EFormSubmission $eform_submission */
     $eform_submission = $this->getSubmitEFormSubmission($eform_type);
     $resubmit_action = $eform_type->getResubmitAction();
@@ -87,7 +104,7 @@ class EFormSubmissionController extends ControllerBase {
    *
    * @return array
    */
-  public function confirm_page(EFormType $eform_type, EFormSubmission $eform_submission) {
+  public function confirmPage(EFormType $eform_type, EFormSubmission $eform_submission) {
     $output = array();
     $submission_text = $eform_type->getSubmissionText();
     if (!empty($submission_text['value'])) {
@@ -207,7 +224,7 @@ class EFormSubmissionController extends ControllerBase {
    *
    * @return array
    */
-  public function nuke_em($eform_type_str) {
+  public function nukeEm($eform_type_str) {
     $query = \Drupal::entityQuery('eform_submission');
     $eids = $query->execute();
     entity_delete_multiple('eform_submission', $eids);
@@ -245,18 +262,18 @@ class EFormSubmissionController extends ControllerBase {
    *   The date formatter service..
    *
   public function __construct(DateFormatter $date_formatter, RendererInterface $renderer) {
-    $this->dateFormatter = $date_formatter;
-    $this->renderer = $renderer;
+  $this->dateFormatter = $date_formatter;
+  $this->renderer = $renderer;
   }
 
   /**
    * {@inheritdoc}
    *
   public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('date.formatter'),
-      $container->get('renderer')
-    );
+  return new static(
+  $container->get('date.formatter'),
+  $container->get('renderer')
+  );
   }
    */
 }

@@ -45,15 +45,15 @@ entity.eform_submission.canonical:
 entity.eform_submission.submit_page:
   path: '/eform/submit/{eform_type}'
   defaults:
-    _controller: '\Drupal\eform\Controller\EFormSubmissionController::submit_page'
-    _title: 'Submit Form @todo dynamic title'
+    _controller: '\Drupal\eform\Controller\EFormSubmissionController::submitPage'
+    _title_callback: '\Drupal\eform\Controller\EFormSubmissionController::submitTitle'
   requirements:
       _access: 'TRUE'
 entity.eform_submission.confirm:
   path: '/eform/confirm/{eform_type}/{eform_submission}'
   defaults:
-    _controller: '\Drupal\eform\Controller\EFormSubmissionController::confirm_page'
-    _title: 'Confirm page @todo dynamic title'
+    _controller: '\Drupal\eform\Controller\EFormSubmissionController::confirmPage'
+    _title_callback: '\Drupal\eform\Controller\EFormSubmissionController::confirmationTitle'
   # @todo Add access callback
   requirements:
     _access: 'TRUE'
@@ -81,7 +81,7 @@ entity.eform_submission.delete_form:
 entity.eform_submission.nuke_em:
   path: '/eform/nuke_em/{eform_type_str}'
   defaults:
-    _controller: '\Drupal\eform\Controller\EFormSubmissionController::nuke_em'
+    _controller: '\Drupal\eform\Controller\EFormSubmissionController::nukeEm'
     _title: 'Nuking'
   requirements:
     _access: 'TRUE'

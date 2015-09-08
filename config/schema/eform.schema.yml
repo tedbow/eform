@@ -15,6 +15,9 @@ eform.type.*:
     description:
       type: text
       label: 'Description'
+    form_title:
+      type: text
+      label: Title for form.
     help:
       type: text
       label: 'Explanation or submission guidelines'

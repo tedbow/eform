@@ -25,4 +25,5 @@ class EFormSubmissionViewsData extends EntityViewsData{
     );
     return $data;
   }
+
 }

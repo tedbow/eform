@@ -93,6 +93,13 @@ class EFormTypeForm extends EntityForm {
       '#group' => 'additional_settings',
     );
 
+    $form['submission']['form_title'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Form Title'),
+      '#default_value' => $type->getFormTitle(),
+      '#description' => t('Title For submission form.'),
+    );
+
 
     $form['submission']['help'] = array(
       '#type' => 'textarea',
@@ -180,7 +187,7 @@ class EFormTypeForm extends EntityForm {
     $form['submission_page']['submission_page_title'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Submission Page Title'),
-      '#default_value' => empty($type->submission_page_title) ? '' : $type->submission_page_title,
+      '#default_value' => empty($type->getSubmissionPageTitle()) ? '' : $type->getSubmissionPageTitle(),
       '#description' => t('Page title for correct submission.') . $default_value_message,
     );
     $submission_text = $type->getSubmissionText();

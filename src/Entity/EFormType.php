@@ -81,7 +81,21 @@ class EFormType extends ConfigEntityBundleBase {
    * @var string
 
    */
-  public $form_title = 'Title';
+  protected $form_title;
+
+  /**
+   * @return string
+   */
+  public function getFormTitle() {
+    return $this->form_title;
+  }
+
+  /**
+   * @param string $form_title
+   */
+  public function setFormTitle($form_title) {
+    $this->form_title = $form_title;
+  }
 
   /**
    * A brief description of this eform type.
@@ -98,6 +112,25 @@ class EFormType extends ConfigEntityBundleBase {
    * @var array
    */
   protected $submission_text;
+
+  /**
+   * @var string
+   */
+  protected $submission_page_title;
+
+  /**
+   * @return string
+   */
+  public function getSubmissionPageTitle() {
+    return $this->submission_page_title;
+  }
+
+  /**
+   * @param string $submission_page_title
+   */
+  public function setSubmissionPageTitle($submission_page_title) {
+    $this->submission_page_title = $submission_page_title;
+  }
 
   /**
    * @return array

@@ -1,8 +1,7 @@
 <?php
 /**
- * Author: Ted Bowman
- * Date: 5/17/15
- * Time: 4:40 PM
+ * @file
+ * Contains \Drupal\eform\EFormSubmissionViewsData.
  */
 
 namespace Drupal\eform;

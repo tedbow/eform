@@ -1,8 +1,7 @@
 <?php
 /**
- * Author: Ted Bowman
- * Date: 5/17/15
- * Time: 11:10 AM
+ * @file
+ * Contains \Drupal\eform\Controller\EFormTypeController.
  */
 
 namespace Drupal\eform\Controller;

@@ -1,8 +1,7 @@
 <?php
 /**
- * Author: Ted Bowman
- * Date: 5/18/15
- * Time: 9:04 AM
+ * @file
+ * Contains \Drupal\eform\Form\EFormTypeDefaultsForm.
  */
 
 namespace Drupal\eform\Form;

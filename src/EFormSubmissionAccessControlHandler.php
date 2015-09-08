@@ -1,8 +1,7 @@
 <?php
 /**
- * Author: Ted Bowman
- * Date: 5/15/15
- * Time: 8:39 PM
+ * @file
+ * Contains \Drupal\eform\EFormSubmissionAccessControlHandler.
  */
 
 namespace Drupal\eform;

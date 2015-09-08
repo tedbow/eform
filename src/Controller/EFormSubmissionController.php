@@ -1,8 +1,7 @@
 <?php
 /**
- * Author: Ted Bowman
- * Date: 4/15/15
- * Time: 2:44 PM
+ * @file
+ * Contains \Drupal\eform\Controller\EFormSubmissionController.
  *
  * @todo Does it make sense to have separate confirm page url
  *       or just confirm text on submit url?

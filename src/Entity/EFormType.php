@@ -146,16 +146,56 @@ class EFormType extends ConfigEntityBundleBase {
     return $this->submission_show_submitted;
   }
 
-  public function __construct(array $values, $entity_type) {
+  /**
+   * Load default values for any text or formatted text properties that are empty.
+   *
+   * @return $this
+   */
+  public function loadDefaults() {
     $config = $this->getConfigManager()->getConfigFactory()->get('eform.type_defaults');
+
     $default_values = $config->getRawData();
-    $values += $default_values;
-    parent::__construct($values, $entity_type);
-
-
-
+    foreach ($default_values as $key => $value) {
+      $this->overrideWithDefaut($key, $value);
+    }
+    return $this;
   }
 
+  /**
+   * Override a property with a default value if empty.
+   *
+   * Only overrides string properties or empty formatted text properties.
+   * @param $key
+   * @param $default_value
+   */
+  protected function overrideWithDefaut($key, $default_value) {
+    $override = FALSE;
+    if (!isset($this->{$key})) {
+      $override =  TRUE;
+    }
+    $value = $this->{$key};
+    if (is_string($value)) {
+      if (empty($value)) {
+        $override =  TRUE;
+      }
+      elseif ($value == '<none>') {
+        $this->{$key} = '';
+        return;
+      }
+    }
+    elseif (is_array($value) && isset($value['value']) && isset($value['format'])) {
+      if (empty($value['value'])) {
+        $override =  TRUE;
+      }
+      elseif ($value['value'] == '<none>') {
+        $this->{$key} = '';
+        return;
+      }
+    }
+    if ($override) {
+      $this->{$key} = $default_value;
+    }
+  }
 
   /**
    * @return boolean
@@ -272,9 +312,18 @@ class EFormType extends ConfigEntityBundleBase {
   }
 
   public function getSubmissionsView($mode = 'admin') {
-    // hardcoded for now
+    // @todo hardcoded for now
     return 'eform_submissions';
   }
+
+  /**
+   * Get the permission string for an operation for this EForm Type.
+   *
+   * @param string $op
+   *
+   * @return string
+   * @throws \Exception
+   */
   public function getPermission($op = 'submit') {
     switch ($op) {
       case 'submit':

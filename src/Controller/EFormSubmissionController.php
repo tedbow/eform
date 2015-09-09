@@ -31,7 +31,8 @@ class EFormSubmissionController extends ControllerBase {
    * @return string
    */
   public function submitTitle(EFormType $eform_type){
-    return $eform_type->getFormTitle();
+    // @todo Replace tokens here?
+    return $eform_type->loadDefaults()->getFormTitle();
   }
 
   /**
@@ -41,7 +42,9 @@ class EFormSubmissionController extends ControllerBase {
    * @return string
    */
   public function confirmationTitle(EFormType $eform_type){
-    return $eform_type->getSubmissionPageTitle();
+    // @todo Replace tokens here?
+
+    return $eform_type->loadDefaults()->getSubmissionPageTitle();
   }
 
   /**
@@ -54,6 +57,7 @@ class EFormSubmissionController extends ControllerBase {
    *   A EForm submission form.
    */
   public function submitPage(EFormType $eform_type) {
+    $eform_type->loadDefaults();
     /** @var \Drupal\eform\Entity\EFormSubmission $eform_submission */
     $eform_submission = $this->getSubmitEFormSubmission($eform_type);
     $resubmit_action = $eform_type->getResubmitAction();
@@ -106,6 +110,7 @@ class EFormSubmissionController extends ControllerBase {
    */
   public function confirmPage(EFormType $eform_type, EFormSubmission $eform_submission) {
     $output = array();
+    $eform_type->loadDefaults();
     $submission_text = $eform_type->getSubmissionText();
     if (!empty($submission_text['value'])) {
       $output['submission_text'] = array(

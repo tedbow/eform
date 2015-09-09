@@ -30,7 +30,7 @@ class EFormTypeDefaultsForm extends ConfigFormBase{
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $values = $form_state->cleanValues()->getValues();
 
-    $config = \Drupal::configFactory()->getEditable('eform.type_defaults');
+    $config = $this->configFactory()->getEditable('eform.type_defaults');
     $keys = array_keys($config->getRawData());
     foreach ($keys as $key) {
       $config->clear($key);
@@ -56,7 +56,9 @@ class EFormTypeDefaultsForm extends ConfigFormBase{
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $eform_type_form = new EFormTypeForm();
-    $eform_type = new EFormType([], 'eform_type');
+    $config = $this->configFactory()->get('eform.type_defaults');
+    $default_values = $config->getRawData();
+    $eform_type = new EFormType($default_values, 'eform_type');
     $form += $eform_type_form->EFormTypeElements($form, $eform_type);
     return parent::buildForm($form, $form_state);
   }

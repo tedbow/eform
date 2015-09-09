@@ -130,7 +130,7 @@ class EFormTypeForm extends EntityForm {
       '#title' => t('Roles'),
       '#options' => array_map('\Drupal\Component\Utility\SafeMarkup::checkPlain', user_role_names()),
       '#default_value' => $default_roles,
-      '#require' => TRUE,
+      '#required' => TRUE,
       '#description' => t('Please select the Role(s) that can submit this form.'),
     );
 

@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityForm;
 use Drupal\eform\Entity\EFormType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Component\Utility\SafeMarkup;
 
 /**
  * Form controller for eform type forms.
@@ -118,17 +119,19 @@ class EFormTypeForm extends EntityForm {
       '#default_value' => empty($type->form_status) ? EFormType::STATUS_OPEN : $type->form_status,
       '#description' => t('Can users submit this form?  Open means the users can submit this form.  Closed means the user can not submit the form.'),
     );
-    $roles = user_roles();
-
+    if ($type->isNew()) {
+      $default_roles = [];
+    }
+    else {
+      $default_roles = array_keys(user_role_names(NULL, $type->getPermission('submit')));
+    };
     $form['access']['roles'] = array(
       '#type' => 'checkboxes',
       '#title' => t('Roles'),
-      '#options' => user_role_names(),
-      //'#options' => array('0' => 'zero'),
-      '#default_value' => empty($type->roles) ? array() : $type->roles,
+      '#options' => array_map('\Drupal\Component\Utility\SafeMarkup::checkPlain', user_role_names()),
+      '#default_value' => $default_roles,
+      '#require' => TRUE,
       '#description' => t('Please select the Role(s) that can submit this form.'),
-      '#required' => TRUE,
-      '#multiple' => TRUE,
     );
 
     $form['access']['resubmit_action'] = array(
@@ -242,17 +245,20 @@ class EFormTypeForm extends EntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state) {
+    /** @var EFormType $type */
     $type = $this->entity;
     $type->type = trim($type->id());
     $type->name = trim($type->name);
-
-
     $status = $type->save();
+
+    foreach ($form_state->getValue('roles') as $rid => $enabled) {
+      user_role_change_permissions($rid, array($type->getPermission() => $enabled));
+    }
 
     $context = array('%name' => $type->label());
 
     if ($status == SAVED_UPDATED) {
-      drupal_set_message(t('The EForm type %name has been updated.', $context));
+      drupal_set_message($this->t('The EForm type %name has been updated.', $context));
     }
     elseif ($status == SAVED_NEW) {
       drupal_set_message(t('The EForm type %name has been added.', $context));
@@ -260,7 +266,6 @@ class EFormTypeForm extends EntityForm {
 
     }
 
-    //$form_state['redirect'] = 'eform.overview_types';
     $form_state->setRedirectUrl($type->urlInfo('collection'));
   }
 }

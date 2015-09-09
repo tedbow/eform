@@ -23,8 +23,9 @@ class EFormPermissions {
    * Gets an array of eform type permissions.
    *
    * @return array
-   *   The eform type permissions.
-   *   @see \Drupal\user\PermissionHandlerInterface::getPermissions()
+   *    The eform type permissions.
+   *
+   * @see \Drupal\user\PermissionHandlerInterface::getPermissions()
    */
   public function eformTypePermissions() {
     $perms = array();
@@ -46,20 +47,16 @@ class EFormPermissions {
    *   An array of permission names and descriptions.
    */
   protected function buildPermissions(EFormType $type) {
-    $type_id = $type->id();
     $type_params = array('%type_name' => $type->label());
 
     return array(
-      "submit $type_id eform" => array(
+      $type->getPermission('submit') => array(
         'title' => $this->t('%type_name: Submit', $type_params),
       ),
-      "edit own $type_id submissions" => array(
+      $type->getPermission('edit own') => array(
         'title' => $this->t('%type_name: Edit own submissions', $type_params),
       ),
-      /*"edit any $type_id submissions" => array(
-        'title' => $this->t('%type_name: Edit any submissions', $type_params),
-      ),*/
-      "delete own $type_id submissions" => array(
+      $type->getPermission('delete own') => array(
         'title' => $this->t('%type_name: Delete own submissions', $type_params),
       ),
       // @todo Which other permissions should be supported?

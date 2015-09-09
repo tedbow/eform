@@ -34,11 +34,6 @@ eform.type.*:
             value:
               type: string
               label: 'Value'
-    roles:
-      type: sequence
-      sequence:
-        type: string
-        label: 'Roles'
     preview_page:
       type: boolean
       label: 'Preview Page'

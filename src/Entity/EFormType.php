@@ -8,7 +8,6 @@
 namespace Drupal\eform\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Url;
 
 /**
@@ -242,6 +241,19 @@ class EFormType extends ConfigEntityBundleBase {
   public function getSubmissionsView($mode = 'admin') {
     // hardcoded for now
     return 'eform_submissions';
+  }
+  public function getPermission($op = 'submit') {
+    switch ($op) {
+      case 'submit':
+        return 'submit' . $this->id() . ' eform';
+        break;
+      case 'edit own':
+      case 'delete own':
+        return $op . $this->id() . ' submissions';
+        break;
+      default:
+        throw new \Exception('Unknown operation ' . $op . ' for Eform Type');
+    }
   }
   /**
    * {@inheritdoc}

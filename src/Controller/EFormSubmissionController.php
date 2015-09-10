@@ -262,7 +262,7 @@ class EFormSubmissionController extends EFormControllerBase {
    *
    * @return array
    */
-  public function nukeEm($eform_type_str) {
+  public function nukeEm() {
     $query = \Drupal::entityQuery('eform_submission');
     $eids = $query->execute();
     entity_delete_multiple('eform_submission', $eids);

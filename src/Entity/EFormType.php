@@ -353,7 +353,7 @@ class EFormType extends ConfigEntityBundleBase {
     // @todo should the submit label be distinct from regular label?
     return \Drupal::l($this->label(), $url);
   }
-  
+
   /**
    * Get the permission string for an operation for this EForm Type.
    *

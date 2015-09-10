@@ -87,7 +87,7 @@ entity.eform_submission.delete_form:
 # @todo Find out if this module must provide action for crud on entity types or
 #   if it will be in core
 entity.eform_submission.nuke_em:
-  path: '/eform/nuke_em/{eform_type_str}'
+  path: '/eform/nuke_em'
   defaults:
     _controller: '\Drupal\eform\Controller\EFormSubmissionController::nukeEm'
     _title: 'Nuking'

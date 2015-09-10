@@ -11,12 +11,14 @@ use Drupal\Core\Entity\EntityForm;
 use Drupal\eform\Entity\EFormType;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Component\Utility\SafeMarkup;
 
 /**
  * Form controller for eform type forms.
  */
 class EFormTypeForm extends EntityForm {
+
+  const VIEW_NONE = 'VIEW-NONE';
+  const VIEW_DEFAULT = 'VIEW-DEFAULT';
   const DEFAULT_PROPERTY_TEXT = 'Leave this field blank to use default setting. Use &lt;none&gt; to show no text';
   /**
    * {@inheritdoc}
@@ -205,6 +207,31 @@ class EFormTypeForm extends EntityForm {
       '#default_value' => !empty($show_submitted),
       '#description' => t('Show submitted data on submission page?'),
     );
+    //****************Views  SETTINGS *********************//
+    $view_options = $this->getViewOptions();
+    $form['submission_views'] = array(
+      '#type' => 'details',
+      '#title' => $this->t('Submission Views'),
+      //'#collapsible' => TRUE,
+      '#group' => 'additional_settings',
+      '#weight' => 30,
+    );
+    $form['submission_views']['admin_submissions_view'] = array(
+      '#type' => 'select',
+      '#title' => t('View for submissions reports'),
+      '#description' => t('Select the View that should be used Submission reports.'),
+      '#default_value' => $type->getAdminView(),
+      '#options' => $view_options,
+    );
+    $user_view_description = 'Select the View that should be used to show users their previous submissions.';
+    $user_view_description .= ' If "None" is selected then the users will not see a previous submissions link.';
+    $form['submission_views']['user_submissions_view'] = array(
+      '#type' => 'select',
+      '#title' => t('View for current user\'s submissions'),
+      '#description' => t($user_view_description),
+      '#default_value' => $type->getUserView(),
+      '#options' => $view_options,
+    );
     //****************DRAFT SETTINGS FIELDSET SETTINGS *********************//
 
     $form['draft_settings'] = array(
@@ -222,6 +249,22 @@ class EFormTypeForm extends EntityForm {
     return $form;
   }
 
+  protected function getViewOptions($include_default = TRUE) {
+    $options = [];
+    if ($include_default) {
+      $options[''] = '(' . $this->t('Use Default') . ')';
+    }
+
+    $view_storage = $this->entityManager->getStorage('view');
+
+    $views = $view_storage->loadByProperties(['base_table' => 'eform_submission_field_data']);
+    /** @var \Drupal\views\Entity\View $view */
+    foreach ($views as $view) {
+      $options[$view->id()] = $view->label();
+    }
+    $options[$this::VIEW_NONE] = '(' . $this->t('None') . ')';
+    return $options;
+  }
   /**
    * {@inheritdoc}
    */

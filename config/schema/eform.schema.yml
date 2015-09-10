@@ -67,8 +67,14 @@ eform.type.*:
       type: boolean
       label: 'Show submission information'
     draftable:
-          type: boolean
-          label: 'Draftable'
+      type: boolean
+      label: 'Draftable'
+    admin_submissions_view:
+      type: string
+      label: 'Submission Admin View'
+    user_submissions_view:
+      type: string
+      label: 'Submission User View'
 # Config object for EForm Type defaults
 # This should follow the same format as eform.type.* but without all settings.
 eform.type_defaults:
@@ -118,3 +124,9 @@ eform.type_defaults:
       draftable:
         type: boolean
         label: 'Draftable'
+      admin_submissions_view:
+        type: string
+        label: 'Submission Admin View'
+      user_submissions_view:
+        type: string
+        label: 'Submission User View'

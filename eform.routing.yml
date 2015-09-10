@@ -29,11 +29,11 @@ entity.eform_type.delete_form:
 entity.eform_type.submissions:
   path: '/admin/structure/eform_types/manage/{eform_type}/submissions/{views_display_id}'
   defaults:
-    _controller: '\Drupal\eform\Controller\EFormTypeController::submissions_page'
-    _title: 'Submissions @todo dynamic title'
+    _controller: '\Drupal\eform\Controller\EFormTypeController::submissionsPage'
+    _title: 'Submissions'
     views_display_id: NULL
   requirements:
-    _permission: 'administer eform_submissions'
+    _custom_access: '\Drupal\eform\Controller\EFormTypeController::submissionsPageAccess'
 ##### EForm Submission Routes #####
 entity.eform_submission.canonical:
   path: '/eform/{eform_submission}'
@@ -47,6 +47,14 @@ entity.eform_submission.submit_page:
   defaults:
     _controller: '\Drupal\eform\Controller\EFormSubmissionController::submitPage'
     _title_callback: '\Drupal\eform\Controller\EFormSubmissionController::submitTitle'
+  requirements:
+      _access: 'TRUE'
+entity.eform_submission.user_submissions:
+  path: '/eform/submissions/{eform_type}/{views_display_id}'
+  defaults:
+    _controller: '\Drupal\eform\Controller\EFormTypeController::userSubmissionsPage'
+    _title_callback: '\Drupal\eform\Controller\EFormTypeController::userSubmissionsTitle'
+    views_display_id: NULL
   requirements:
       _access: 'TRUE'
 entity.eform_submission.confirm:

@@ -84,6 +84,49 @@ class EFormType extends ConfigEntityBundleBase {
   protected $form_title;
 
   /**
+   * View to use admin submission view.
+   *
+   * @var string
+   */
+  protected $admin_submissions_view;
+
+  /**
+   * View to use user submission view.
+   *
+   * @var string
+   */
+  protected $user_submissions_view;
+
+  /**
+   * @return string
+   */
+  public function getUserView() {
+    return $this->user_submissions_view;
+  }
+
+  /**
+   * @param string $user_submissions_view
+   */
+  public function setUserView($user_submissions_view) {
+    $this->user_submissions_view = $user_submissions_view;
+  }
+
+  /**
+   * @return string
+   */
+  public function getAdminView() {
+    return $this->admin_submissions_view;
+  }
+
+  /**
+   * @param string $admin_submissions_view
+   */
+  public function setAdminView($admin_submissions_view) {
+    $this->admin_submissions_view = $admin_submissions_view;
+  }
+
+
+  /**
    * @return string
    */
   public function getFormTitle() {
@@ -310,12 +353,7 @@ class EFormType extends ConfigEntityBundleBase {
     // @todo should the submit label be distinct from regular label?
     return \Drupal::l($this->label(), $url);
   }
-
-  public function getSubmissionsView($mode = 'admin') {
-    // @todo hardcoded for now
-    return 'eform_submissions';
-  }
-
+  
   /**
    * Get the permission string for an operation for this EForm Type.
    *

@@ -56,7 +56,7 @@ entity.eform_submission.user_submissions:
     _title_callback: '\Drupal\eform\Controller\EFormTypeController::userSubmissionsTitle'
     views_display_id: NULL
   requirements:
-      _access: 'TRUE'
+      _custom_access: '\Drupal\eform\Controller\EFormTypeController::userSubmissionsPageAccess'
 entity.eform_submission.confirm:
   path: '/eform/confirm/{eform_type}/{eform_submission}'
   defaults:

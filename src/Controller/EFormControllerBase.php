@@ -81,6 +81,7 @@ class EFormControllerBase extends ControllerBase {
     // @todo Is there a better way to check the for "embed" rather than checking class?
     $class = get_class($display);
     if ($display->isEnabled() && $class == 'Drupal\views\Plugin\views\display\Embed') {
+      // @todo Check to make sure first arguement is EForm type.
       return TRUE;
     }
     return FALSE;
@@ -112,5 +113,23 @@ class EFormControllerBase extends ControllerBase {
       // No useable displays in this View.
     }
     return $output;
+  }
+
+  /**
+   * Determine if user would have at least 1 submission returned from View.
+   *
+   * Depending on the View used the user might not have submission returned.
+   * @param \Drupal\eform\Entity\EFormType $eform_type
+   *
+   * @return bool
+   */
+  function userHasViewSubmissions(EFormType $eform_type) {
+    if ($view_name = $eform_type->getUserView()) {
+      $display_ids = $this->getViewDisplays($view_name);
+      $display_id = array_shift($display_ids);
+      $results = views_get_view_result($view_name, $display_id, $eform_type->type);
+      return !empty($results);
+    }
+    return FALSE;
   }
 }

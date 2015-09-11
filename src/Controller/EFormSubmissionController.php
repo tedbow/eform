@@ -80,10 +80,13 @@ class EFormSubmissionController extends EFormControllerBase {
     $form_mode = $this->getFormMode($eform_submission);
     $form = $this->entityFormBuilder()->getForm($eform_submission, $form_mode);
 
-    $form['user_submissions_link'] = $this->getUserSubmissionsLink($eform_type);
-
+    if ($this->userHasViewSubmissions($eform_type)) {
+      $form['user_submissions_link'] = $this->getUserSubmissionsLink($eform_type);
+    }
     return $form;
   }
+
+
 
   /**
    * @param \Drupal\eform\Entity\EFormType $eform_type
@@ -91,22 +94,11 @@ class EFormSubmissionController extends EFormControllerBase {
   protected function getUserSubmissionsLink(EFormType $eform_type) {
     $links_output = [];
     if ($view_id = $eform_type->getUserView()) {
-
       $route_args = [
         'eform_type' => $eform_type->type,
       ];
       $url = Url::fromRoute('entity.eform_submission.user_submissions', $route_args);
-      $link = array(
-        'title' => $this->t('View your previous submissions'),
-        'url' => $url,
-        // @todo This is not working
-        '#attributes' => ['class' => ['tabs__tab']],
-      );
-      $links_output = array(
-        '#theme' => 'links',
-        '#links' => [$link],
-        '#attributes' => ['class' => ['tabs', 'secondary']],
-      );
+      $links_output['#markup'] = $this->l('View your previous submissions', $url);
     }
     return $links_output;
 

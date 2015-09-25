@@ -71,6 +71,9 @@ class EFormSubmission extends ContentEntityBase implements ContentEntityInterfac
 
 
 
+  const EFORM_NOT_DRAFT = 'EFORM_NOT_DRAFT';
+
+  const EFORM_DRAFT = 'EFORM_DRAFT';
   /**
    * {@inheritdoc}
    */
@@ -290,7 +293,7 @@ class EFormSubmission extends ContentEntityBase implements ContentEntityInterfac
    *   The called EForm Submission entity.
    */
   public function setDraft($draft) {
-    $this->set('draft', $draft ? EFORM_DRAFT : EFORM_NOT_DRAFT);
+    $this->set('draft', $draft ? static::EFORM_DRAFT : static::EFORM_NOT_DRAFT);
     return $this;
   }
   public function isSubmitted() {

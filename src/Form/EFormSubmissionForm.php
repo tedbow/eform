@@ -8,6 +8,7 @@ namespace Drupal\eform\Form;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\eform\Entity\EFormSubmission;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 
@@ -36,7 +37,7 @@ class EFormSubmissionForm extends ContentEntityForm {
     /** @var \Drupal\eform\Entity\EFormSubmission $entity */
     $entity = $this->entity;
 
-    $entity->setDraft(EFORM_DRAFT);
+    $entity->setDraft(EFormSubmission::EFORM_DRAFT);
     return parent::save($form, $form_state);
   }
 

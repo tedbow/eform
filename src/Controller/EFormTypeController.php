@@ -20,7 +20,7 @@ class EFormTypeController extends EFormControllerBase {
    *
    * @return array
    */
-  public function submissionsPage(EFormType $eform_type, $views_display_id = NULL) {
+  public function submissionsPage(EFormType $eform_type, $views_display_id = NULL, $view_name = NULL, $route_name = NULL) {
     $eform_type->loadDefaults();
     $view_name = $eform_type->getAdminView();
     $output = parent::submissionsPage($eform_type, $views_display_id, $view_name, 'entity.eform_type.submissions');
